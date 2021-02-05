@@ -11,18 +11,17 @@ import useLocalStorage from './useLocalStorage';
 const App = props => {
     const [fishes, setFishes] = React.useState({});
     const [order, setOrder] = React.useState({});
-
     const [storedOrder, setStoredOrder] = useLocalStorage('storedOrder', order);
 
-    useEffect(() => {
-        const { params } = props.match;
-        const localStorageRef = localStorage.getItem(params.storeId);
+    // useEffect(() => {
+    //     const { params } = props.match;
+    //     const localStorageRef = localStorage.getItem(params.storeId);
 
-        if (localStorageRef) {
-            setOrder(JSON.parse(localStorageRef))
-            setStoredOrder(props.match.params.storeId, JSON.stringify(order));
-        }
-    }, []);
+    //     if (localStorageRef) {
+    //         setOrder(JSON.parse(localStorageRef))
+    //         setStoredOrder(props.match.params.storeId, JSON.stringify(order));
+    //     }
+    // }, []);
 
     // useEffect(() => {
     //     console.log('Mounted');
@@ -77,7 +76,7 @@ const App = props => {
     useEffect(() => {
         console.log('Updated', order);
         localStorage.setItem(props.match.params.storeId, JSON.stringify(order));
-        setStoredOrder(props.match.params.storeId, JSON.stringify(order));
+        // setStoredOrder(props.match.params.storeId, JSON.stringify(order));
     }, [order]);
 
     const addFish = fish => {
@@ -97,13 +96,24 @@ const App = props => {
         setFishes(sampleFishes);
     }
 
-    const addToOrder = key => {
+    const addToOrder0 = key => {
         console.log("Add to Order", order);
+        const order = {...order};
         order[key] = order[key] + 1 || 1;
         console.log("Order is: ", order);
 
         setOrder(order);
-        setStoredOrder(props.match.params.storeId, JSON.stringify(order));
+        setStoredOrder(order);   
+    } 
+
+    const addToOrder = key => {
+        console.log("Add to Order", order);
+        const updatedOrder = {...order};
+        updatedOrder[key] = updatedOrder[key] + 1 || 1;
+        console.log("Order is: ", updatedOrder);
+
+        setOrder(updatedOrder);
+        setStoredOrder(updatedOrder);
     }
 
     return (
